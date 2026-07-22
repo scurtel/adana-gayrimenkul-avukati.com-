@@ -40,21 +40,53 @@ npm run check
 npm run audit
 ```
 
-## Hostinger deploy
+## Hostinger Node.js deploy
 
-1. `npm install`
-2. `npm run build`
-3. `dist/` klasörünün **içeriğini** Hostinger `public_html` içine yükleyin
+Bu proje Astro + `@astrojs/node` (**standalone**) ile Hostinger **Node.js** uygulaması olarak çalışır.
 
-Kaynak proje dosyalarını (`src`, `node_modules` vb.) yüklemeyin; yalnızca `dist` içeriği yayınlanır.
+| Ayar | Değer |
+|------|--------|
+| Node.js sürümü | **22.x** (`engines`: `>=22.12.0`) |
+| Build command | `npm run build` |
+| Start command | `npm run start` |
+| Uygulama başlangıç dosyası | `scripts/start-server.mjs` → `dist/server/entry.mjs` |
+| Dinleme | `HOST=0.0.0.0`, port = `process.env.PORT` |
 
-GitHub üzerinden deploy kullanıyorsanız build komutu `npm run build`, publish dizini `dist` olmalıdır.
+### Hostinger panel adımları
+
+1. GitHub deposunu bağlayın veya kaynakları yükleyin.
+2. Node.js sürümünü **22** seçin.
+3. Build command: `npm run build`
+4. Start / Application start command: `npm run start`
+5. Gerekirse Application root: proje kökü (`package.json`’ın olduğu klasör)
+
+### Environment variable isimleri
+
+| Değişken | Zorunlu | Açıklama |
+|----------|---------|----------|
+| `PORT` | Hostinger genelde otomatik verir | HTTP dinleme portu |
+| `HOST` | Önerilir: `0.0.0.0` | Tüm arayüzlerden dinleme (start script varsayılanı) |
+| `GEMINI_API_KEY` | Hayır (yalnızca içerik üretimi) | Production `start` için gerekmez |
+| `GEMINI_GOOGLE_SEARCH_ENABLED` | Hayır | İçerik scripti için |
+
+Gerçek API anahtarlarını GitHub’a veya `.env.example` dosyasına koymayın. Panelde secret olarak ekleyin.
+
+### Yerel production smoke test
+
+```bash
+npm install
+npm run build
+PORT=4321 npm run start
+```
+
+### Eski statik Hostinger notu
+
+Önceki `dist/` → `public_html` yükleme yolu bu Node.js kurulumunda geçerli değildir. Uygulama `npm run start` ile ayağa kalkar; sunucu hem SSR hem önceden üretilmiş statik varlıkları sunar.
 
 ## DNS ve SSL
 
 - Alan adı A/CNAME kayıtlarını Hostinger’a yönlendirin
 - SSL (Let’s Encrypt) etkinleştirin
-- HTTP → HTTPS yönlendirmesi `public/.htaccess` ile gelir
 
 ## Entity yapısı
 

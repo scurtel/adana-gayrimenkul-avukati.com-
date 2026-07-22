@@ -6,7 +6,7 @@ import node from '@astrojs/node';
 export default defineConfig({
   site: 'https://adana-gayrimenkul-avukati.com',
   trailingSlash: 'always',
-  output: 'static',
+  output: 'server',
   adapter: node({
     mode: 'standalone',
   }),

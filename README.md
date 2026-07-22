@@ -49,7 +49,7 @@ Bu proje Astro + `@astrojs/node` (**standalone**) ile Hostinger **Node.js** uygu
 | Node.js sürümü | **22.x** (`engines`: `>=22.12.0`) |
 | Build command | `npm run build` |
 | Start command | `npm run start` |
-| Uygulama başlangıç dosyası | `scripts/start-server.mjs` → `dist/server/entry.mjs` |
+| Uygulama başlangıç dosyası | `dist/server/entry.mjs` |
 | Dinleme | `HOST=0.0.0.0`, port = `process.env.PORT` |
 
 ### Hostinger panel adımları

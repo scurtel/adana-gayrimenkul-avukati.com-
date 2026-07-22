@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { siteConfig } from '../config/site';
+
+const path = '/kullanim-kosullari/';
+---
+
+<BaseLayout
+  title="Kullanım Koşulları"
+  description="adana-gayrimenkul-avukati.com kullanım koşulları ve genel bilgilendirme sınırları."
+  canonicalPath={path}
+>
+  <header class="page-hero">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Ana Sayfa', href: '/' }, { label: 'Kullanım Koşulları' }]} />
+      <h1>Kullanım Koşulları</h1>
+    </div>
+  </header>
+  <section class="section">
+    <div class="container prose">
+      <p>
+        Bu web sitesi {siteConfig.brandName} tarafından gayrimenkul ve taşınmaz hukuku alanında genel
+        bilgilendirme amacıyla hazırlanmıştır. Sitedeki içerikler hukuki tavsiye niteliği taşımaz ve
+        avukat-müvekkil ilişkisi kurmaz.
+      </p>
+      <h2>İçeriklerin kapsamı</h2>
+      <p>
+        Metinler genel bilgilendirme amaçlıdır. Mevzuat ve uygulama değişebilir; somut olayın
+        özelliklerine göre değerlendirme farklılık gösterebilir.
+      </p>
+      <h2>Fikri haklar</h2>
+      <p>
+        Aksi belirtilmedikçe site içeriğinin tüm hakları saklıdır. İzinsiz çoğaltma ve ticari kullanım
+        yasaktır.
+      </p>
+      <h2>Sorumluluk sınırı</h2>
+      <p>
+        Site kullanımından veya içeriklere dayanılarak alınan kararlardan doğabilecek sonuçlardan
+        {siteConfig.brandName} sorumlu tutulamaz. Hukuki işlem öncesi uzman değerlendirmesi önerilir.
+      </p>
+      <h2>Kurumsal ilişki</h2>
+      <p>
+        Ana kurumsal site
+        <a href={siteConfig.mainCorporateSite}>sumerhukuk.com</a>
+        adresidir. Bu site ayrı bir hukuk bürosu değildir.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<BaseLayout
+  title="Sayfa Bulunamadı"
+  description="Aradığınız sayfa bulunamadı."
+  canonicalPath="/404/"
+  noindex={true}
+>
+  <section class="section">
+    <div class="container prose">
+      <h1>Sayfa bulunamadı</h1>
+      <p>
+        Aradığınız sayfa taşınmış veya kaldırılmış olabilir. Ana sayfadan veya gayrimenkul hukuku
+        bilgilendirme sayfalarından devam edebilirsiniz.
+      </p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="/">Ana Sayfa</a>
+        <a class="btn btn-ghost" href="/gayrimenkul-hukuku/">Gayrimenkul Hukuku</a>
+        <a class="btn btn-ghost" href="/iletisim/">İletişim</a>
+        <a class="btn btn-ghost" href={siteConfig.mainCorporateSite}>Sümer Hukuk</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

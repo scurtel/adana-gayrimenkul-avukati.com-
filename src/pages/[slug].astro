@@ -1,0 +1,119 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import {
+  graph,
+  organizationSchema,
+  legalServiceSchema,
+  websiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+} from '../lib/schema';
+import { getTopicBySlug } from '../data/navigation';
+
+export async function getStaticPaths() {
+  const topics = await getCollection('topics', ({ data }) => !data.draft);
+  return topics.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const meta = getTopicBySlug(entry.data.slug);
+const related = (entry.data.related || meta?.related || [])
+  .map((slug) => getTopicBySlug(slug))
+  .filter(Boolean);
+
+const path = `/${entry.data.slug}/`;
+const jsonLd = graph([
+  organizationSchema(),
+  legalServiceSchema(),
+  websiteSchema(),
+  webPageSchema({
+    path,
+    name: entry.data.seoTitle,
+    description: entry.data.description,
+  }),
+  breadcrumbSchema([
+    { name: 'Ana Sayfa', path: '/' },
+    ...(entry.data.isPillar
+      ? []
+      : [{ name: 'Gayrimenkul Hukuku', path: '/gayrimenkul-hukuku/' }]),
+    { name: entry.data.title, path },
+  ]),
+]);
+
+const relatedAnchors = [
+  'İlgili konu başlığı',
+  'Bu alanda ek bilgi',
+  'Bağlantılı hukuki süreç',
+  'Benzer uyuşmazlık türü',
+  'İncelemeniz faydalı olabilir',
+  'Detaylı bilgilendirme',
+];
+---
+
+<BaseLayout
+  title={entry.data.seoTitle}
+  description={entry.data.description}
+  canonicalPath={path}
+  jsonLd={jsonLd}
+>
+  <header class="page-hero">
+    <div class="container">
+      <Breadcrumb
+        items={[
+          { label: 'Ana Sayfa', href: '/' },
+          ...(!entry.data.isPillar
+            ? [{ label: 'Gayrimenkul Hukuku', href: '/gayrimenkul-hukuku/' }]
+            : []),
+          { label: entry.data.title },
+        ]}
+      />
+      <h1>{entry.data.title}</h1>
+      <p class="lead">{entry.data.description}</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container prose">
+      <Content />
+
+      {
+        related.length > 0 && (
+          <aside aria-labelledby="related-heading">
+            <h2 id="related-heading">İlgili sayfalar</h2>
+            <ul class="related-list">
+              {related.slice(0, entry.data.isPillar ? 20 : 4).map((item, index) => (
+                <li>
+                  <a href={`/${item!.slug}/`}>
+                    {entry.data.isPillar
+                      ? item!.title
+                      : `${relatedAnchors[index % relatedAnchors.length]}: ${item!.title}`}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a href="/makaleler/">Güncel makalelere göz atın</a>
+              </li>
+              <li>
+                <a href="/iletisim/">İletişim ve görüşme talebi</a>
+              </li>
+            </ul>
+          </aside>
+        )
+      }
+
+      <div class="notice">
+        Bu site, Sümer Hukuk tarafından gayrimenkul ve taşınmaz hukuku alanında genel bilgilendirme
+        amacıyla hazırlanmıştır. Somut olayınız için hukuki değerlendirme farklılık gösterebilir.
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA />
+</BaseLayout>

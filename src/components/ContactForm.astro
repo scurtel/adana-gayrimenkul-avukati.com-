@@ -1,0 +1,91 @@
+---
+import { site, lawFirm } from '../config/site';
+
+const endpointConfigured = Boolean(site.formEndpoint);
+---
+
+{
+  endpointConfigured ? (
+    <form class="form" method="post" action={site.formEndpoint} novalidate data-contact-form>
+      <label>
+        Ad Soyad
+        <input type="text" name="name" required autocomplete="name" minlength="2" />
+      </label>
+      <label>
+        Telefon
+        <input type="tel" name="phone" required autocomplete="tel" pattern="^[0-9+\\s()-]{10,20}$" />
+      </label>
+      <label>
+        E-posta
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <label>
+        Konu
+        <select name="subject" required>
+          <option value="">Seçiniz</option>
+          <option>Tapu uyuşmazlığı</option>
+          <option>Ortaklığın giderilmesi</option>
+          <option>Miras kaynaklı taşınmaz</option>
+          <option>Gayrimenkul sözleşmesi</option>
+          <option>Diğer</option>
+        </select>
+      </label>
+      <label>
+        Mesaj
+        <textarea name="message" required minlength="20"></textarea>
+      </label>
+      <label class="hp" aria-hidden="true">
+        Web sitesi
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </label>
+      <label class="form-checkbox">
+        <input type="checkbox" name="consent" required />
+        <span>
+          <a href="/aydinlatma-metni/">Aydınlatma metnini</a> okudum; iletişim talebim için bilgilerimin
+          işlenmesini kabul ediyorum.
+        </span>
+      </label>
+      <button class="btn btn-primary" type="submit">Gönder</button>
+      <p class="form-message" data-form-status hidden></p>
+    </form>
+  ) : (
+    <div class="form-message" role="status">
+      Form altyapısı henüz yapılandırılmamıştır. Telefon veya WhatsApp üzerinden iletişime geçebilirsiniz.
+      <div class="cta-actions" style="margin-top:1rem;">
+        <a class="btn btn-primary" href={lawFirm.telephoneHref}>
+          {lawFirm.telephoneDisplay}
+        </a>
+        <a class="btn btn-ghost" href={lawFirm.whatsappUrl} rel="noopener noreferrer">
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  )
+}
+
+{
+  endpointConfigured && (
+    <script is:inline>
+      (() => {
+        const form = document.querySelector('[data-contact-form]');
+        if (!form) return;
+        const status = form.querySelector('[data-form-status]');
+
+        form.addEventListener('submit', (event) => {
+          const hp = form.querySelector('input[name="website"]');
+          if (hp && hp.value) {
+            event.preventDefault();
+            return;
+          }
+
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            status.hidden = false;
+            status.textContent = 'Lütfen zorunlu alanları kontrol edin.';
+            form.reportValidity();
+          }
+        });
+      })();
+    </script>
+  )
+}

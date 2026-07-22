@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { lawFirm, attorney } from '../config/site';
+import {
+  graph,
+  organizationSchema,
+  legalServiceSchema,
+  websiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  personSchema,
+} from '../lib/schema';
+
+const path = '/iletisim/';
+const jsonLd = graph([
+  organizationSchema(),
+  legalServiceSchema(),
+  personSchema(),
+  websiteSchema(),
+  webPageSchema({
+    path,
+    name: 'İletişim | Sümer Hukuk',
+    description:
+      'Sümer Hukuk iletişim bilgileri, adres, telefon, WhatsApp ve görüşme talep formu.',
+  }),
+  breadcrumbSchema([
+    { name: 'Ana Sayfa', path: '/' },
+    { name: 'İletişim', path },
+  ]),
+]);
+---
+
+<BaseLayout
+  title="İletişim | Sümer Hukuk"
+  description="Sümer Hukuk iletişim bilgileri, Adana ofis adresi, telefon, WhatsApp ve görüşme talebi."
+  canonicalPath={path}
+  jsonLd={jsonLd}
+>
+  <header class="page-hero">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Ana Sayfa', href: '/' }, { label: 'İletişim' }]} />
+      <h1>İletişim</h1>
+      <p class="lead">
+        Gayrimenkul ve taşınmaz uyuşmazlıklarınız için Sümer Hukuk ile iletişime geçebilirsiniz.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container" style="display:grid;gap:2.5rem;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));">
+      <div>
+        <h2>{lawFirm.brandName}</h2>
+        <p>
+          Google Business Profile adı:<br />
+          <strong>{lawFirm.businessProfileName}</strong>
+        </p>
+        <ul class="contact-list">
+          <li>
+            <strong>Telefon:</strong>
+            <a href={lawFirm.telephoneHref}>{lawFirm.telephoneDisplay}</a>
+          </li>
+          <li>
+            <strong>WhatsApp:</strong>
+            <a href={lawFirm.whatsappUrl} rel="noopener noreferrer">Mesaj gönder</a>
+          </li>
+          <li>
+            <strong>Adres:</strong>
+            {lawFirm.fullAddress}
+          </li>
+          <li>
+            <strong>Resmî site:</strong>
+            <a href={lawFirm.corporateWebsite}>Sümer Hukuk resmî internet sitesi</a>
+          </li>
+        </ul>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href={lawFirm.telephoneHref}>Hemen Ara</a>
+          <a class="btn btn-ghost" href={lawFirm.whatsappUrl} rel="noopener noreferrer">WhatsApp</a>
+          {
+            lawFirm.googleMapsUrl && (
+              <a class="btn btn-ghost" href={lawFirm.googleMapsUrl} rel="noopener noreferrer">
+                Yol Tarifi
+              </a>
+            )
+          }
+        </div>
+
+        <div style="margin-top:1.5rem;">
+          {
+            lawFirm.googleMapsEmbedUrl ? (
+              <iframe
+                title="Sümer Hukuk ofis konumu"
+                src={lawFirm.googleMapsEmbedUrl}
+                width="600"
+                height="360"
+                style="width:100%;max-width:100%;border:0;height:360px;"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              />
+            ) : (
+              <div class="map-placeholder">
+                Harita henüz yapılandırılmamıştır. `src/config/site.ts` içinde
+                `lawFirm.googleMapsEmbedUrl` ve `lawFirm.googleMapsUrl` alanlarını doldurduğunuzda
+                burada görünecektir.
+              </div>
+            )
+          }
+        </div>
+      </div>
+
+      <div>
+        <h2>Görüşme talep formu</h2>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container prose">
+      <h2>Uzman Avukat</h2>
+      <p>
+        <a href={attorney.profilePage}>{attorney.name}</a>
+        — gayrimenkul ve tapu hukuku içeriklerindeki uzman kişi varlığı.
+      </p>
+      <div class="cta-actions">
+        <a class="btn btn-ghost" href={attorney.profilePage}>Avukat profilini inceleyin</a>
+        <a class="btn btn-ghost" href={attorney.personalWebsite} rel="noopener noreferrer">
+          Av. Ceren Sümer Cilli resmî internet sitesi
+        </a>
+        {
+          attorney.googleMapsUrl && (
+            <a class="btn btn-ghost" href={attorney.googleMapsUrl} rel="noopener noreferrer">
+              Google Haritalar’da Av. Ceren Sümer Cilli
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

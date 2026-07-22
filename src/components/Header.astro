@@ -1,0 +1,72 @@
+---
+import { siteConfig } from '../config/site';
+import { headerNav } from '../data/navigation';
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-name">{siteConfig.brandName}</span>
+      <span class="brand-tagline">{siteConfig.siteTagline}</span>
+    </a>
+
+    <div class="header-actions">
+      <a class="btn btn-primary btn-cta-header" href="/iletisim/">
+        <span>Hukuki Görüşme Talebi</span>
+      </a>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+        data-nav-toggle
+      >
+        Menü
+      </button>
+    </div>
+
+    <nav class="site-nav" id="primary-nav" data-nav aria-label="Ana menü">
+      <ul>
+        {
+          headerNav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href)) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const toggle = document.querySelector('[data-nav-toggle]');
+    const nav = document.querySelector('[data-nav]');
+    if (!toggle || !nav) return;
+
+    const setOpen = (open) => {
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(!nav.classList.contains('is-open'));
+    });
+
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    });
+  })();
+</script>

@@ -1,0 +1,102 @@
+---
+import { attorney, lawFirm } from '../config/site';
+
+interface Props {
+  author?: string;
+  reviewedBy?: string;
+  authorUrl?: string;
+  reviewerUrl?: string;
+}
+
+const { author = '', reviewedBy = '', authorUrl = '', reviewerUrl = '' } = Astro.props;
+
+const isAttorneyAuthor = author === attorney.name;
+const isReviewed = reviewedBy === attorney.name;
+const showAttorneyCard = isAttorneyAuthor || isReviewed;
+const profileHref = authorUrl || reviewerUrl || attorney.profilePage;
+---
+
+{
+  showAttorneyCard ? (
+    <aside class="author-card" aria-label="Yazar ve hukuki inceleme">
+      <p class="author-card-name">{attorney.name}</p>
+      {isReviewed && (
+        <p>
+          Bu içerik {attorney.name} tarafından hukuki açıdan incelenmiştir.
+        </p>
+      )}
+      {isAttorneyAuthor && !isReviewed && (
+        <p>İçerik yazarı: {attorney.name}</p>
+      )}
+      <ul class="author-card-links">
+        <li>
+          <a href={profileHref}>Avukat profili</a>
+        </li>
+        <li>
+          <a href={attorney.personalWebsite} rel="noopener noreferrer">
+            Av. Ceren Sümer Cilli resmî internet sitesi
+          </a>
+        </li>
+        {attorney.googleMapsUrl && (
+          <li>
+            <a href={attorney.googleMapsUrl} rel="noopener noreferrer">
+              Google Haritalar
+            </a>
+          </li>
+        )}
+      </ul>
+    </aside>
+  ) : (
+    <aside class="author-card author-card--publisher" aria-label="Yayıncı bilgisi">
+      <p class="author-card-name">Yayıncı: {lawFirm.brandName}</p>
+      <p>İçerik türü: Genel hukuki bilgilendirme</p>
+      <ul class="author-card-links">
+        <li>
+          <a href={lawFirm.corporateWebsite}>Sümer Hukuk resmî internet sitesi</a>
+        </li>
+        <li>
+          <a href={attorney.profilePage}>{attorney.name} profili</a>
+        </li>
+      </ul>
+    </aside>
+  )
+}
+
+<style>
+  .author-card {
+    margin-top: 2.5rem;
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.55);
+    font-size: 0.95rem;
+  }
+
+  .author-card-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    color: var(--color-ink);
+  }
+
+  .author-card p {
+    margin-bottom: 0.5rem;
+    color: var(--color-muted);
+  }
+
+  .author-card-links {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+  }
+
+  .author-card-links a {
+    text-decoration: none;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+</style>

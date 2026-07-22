@@ -1,0 +1,36 @@
+---
+import { lawFirm } from '../config/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+
+const {
+  title = 'Gayrimenkul Uyuşmazlığınızı Hukuki Açıdan Değerlendirin',
+  text = 'Tapu, ortaklığın giderilmesi, miras kaynaklı taşınmazlar ve gayrimenkul sözleşmelerine ilişkin somut durumunuz için iletişime geçebilirsiniz.',
+} = Astro.props;
+---
+
+<section class="cta-band">
+  <div class="container">
+    <h2>{title}</h2>
+    <p>{text}</p>
+    <p>
+      Telefon: <a href={lawFirm.telephoneHref}>{lawFirm.telephoneDisplay}</a><br />
+      Adres: {lawFirm.fullAddress}
+    </p>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href={lawFirm.telephoneHref}>Hemen Ara</a>
+      <a class="btn btn-secondary" href={lawFirm.whatsappUrl} rel="noopener noreferrer">WhatsApp</a>
+      {
+        lawFirm.googleMapsUrl && (
+          <a class="btn btn-secondary" href={lawFirm.googleMapsUrl} rel="noopener noreferrer">
+            Yol Tarifi
+          </a>
+        )
+      }
+      <a class="btn btn-secondary" href="/iletisim/">İletişim Sayfası</a>
+    </div>
+  </div>
+</section>

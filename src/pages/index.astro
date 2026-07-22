@@ -1,0 +1,292 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import { siteConfig, attorney } from '../config/site';
+import { topicPages } from '../data/navigation';
+import {
+  graph,
+  organizationSchema,
+  legalServiceSchema,
+  websiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  faqSchema,
+  personSchema,
+} from '../lib/schema';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf())
+  .slice(0, 6);
+
+const featured = [
+  { slug: 'tapu-iptal-ve-tescil-davasi', title: 'Tapu İptal ve Tescil Davaları', text: 'Yolsuz tescil ve irade sakatlığı iddialarında kayıt düzeltme süreçleri.' },
+  { slug: 'ortakligin-giderilmesi', title: 'Ortaklığın Giderilmesi', text: 'Paydaşların anlaşamadığı hisseli taşınmazlarda taksim veya satış seçenekleri.' },
+  { slug: 'muris-muvazaasi', title: 'Muris Muvazaası', text: 'Miras bırakanın taşınmaz devrinde muvazaa iddiasının değerlendirilmesi.' },
+  { slug: 'hisseli-tapu-uyusmazliklari', title: 'Hisseli Tapu Uyuşmazlıkları', text: 'Paylı mülkiyette kullanım, yönetim ve satıştan doğan sorunlar.' },
+  { slug: 'el-atmanin-onlenmesi', title: 'El Atmanın Önlenmesi', text: 'Taşınmaza izinsiz müdahalenin durdurulmasına ilişkin hukuki yollar.' },
+  { slug: 'ecrimisil', title: 'Ecrimisil', text: 'İzinsiz kullanım karşılığı talep edilebilecek ecrimisil şartları.' },
+  { slug: 'gayrimenkul-sozlesmeleri', title: 'Gayrimenkul Sözleşmeleri', text: 'Satış vaadi, kat karşılığı ve benzeri sözleşmelerin incelenmesi.' },
+  { slug: 'on-alim-hakki', title: 'Önalım Hakkı', text: 'Pay satışında diğer paydaşların önalım hakkını kullanma koşulları.' },
+];
+
+const situations = [
+  'Tapu devrinin irade dışında yapıldığı iddiası',
+  'Miras bırakanın taşınmaz devrinde muvazaa iddiası',
+  'Hisseli taşınmazın fiilen kullanılamaması',
+  'Paydaşların satış konusunda anlaşamaması',
+  'Taşınmazın izinsiz kullanılması',
+  'Tapu kaydında hata bulunması',
+  'Satış vaadi sözleşmesinin yerine getirilmemesi',
+  'Kat karşılığı inşaat sözleşmesi uyuşmazlıkları',
+];
+
+const faqItems = [
+  {
+    question: 'Gayrimenkul avukatı hangi uyuşmazlıklarla ilgilenir?',
+    answer:
+      'Tapu sicili, mülkiyet, ortaklığın giderilmesi, miras kaynaklı taşınmazlar, ecrimisil, el atmanın önlenmesi ve gayrimenkul sözleşmelerinden doğan uyuşmazlıklarla ilgilenir.',
+  },
+  {
+    question: 'Tapu iptal ve tescil davası hangi durumlarda açılır?',
+    answer:
+      'Yolsuz tescil, irade sakatlığı, muvazaa veya hukuka aykırı işlem nedeniyle tapu kaydının gerçek hak durumunu yansıtmadığı iddiasında gündeme gelebilir.',
+  },
+  {
+    question: 'Hisseli tapuda ortaklık nasıl sona erdirilir?',
+    answer:
+      'Paydaşlar anlaşarak paydaşlığı sona erdirebilir; anlaşma yoksa ortaklığın giderilmesi davası ile aynen taksim veya satış yolu değerlendirilebilir.',
+  },
+  {
+    question: 'Ortaklığın giderilmesi davası nasıl ilerler?',
+    answer:
+      'Genel olarak tarafların ve taşınmazın tespiti, keşif/bilirkişi incelemesi, taksim imkânının değerlendirilmesi ve gerekirse satış aşamaları izlenir. Süre dosyaya göre değişir.',
+  },
+  {
+    question: 'Muris muvazaası ne anlama gelir?',
+    answer:
+      'Miras bırakanın, gerçekte bağışlamak istediği taşınmazı satış gibi göstererek mirasçılardan mal kaçırdığı iddiasını ifade eder; ispat somut olayın özelliklerine bağlıdır.',
+  },
+  {
+    question: 'Miras kalan taşınmaz nasıl paylaşılır?',
+    answer:
+      'Mirasçılar anlaşarak paylaşabilir veya anlaşmazlık halinde ortaklığın giderilmesi ve ilgili diğer hukuki yollar değerlendirilebilir. Önce intikal ve belge incelemesi önemlidir.',
+  },
+  {
+    question: 'Bir taşınmazı izinsiz kullanan kişiden tazminat istenebilir mi?',
+    answer:
+      'Şartları varsa ecrimisil talebi ileri sürülebilir. Kullanım süresi, kötü niyet ve taşınmazın niteliği gibi unsurlar değerlendirmede rol oynar.',
+  },
+  {
+    question: 'Gayrimenkul uyuşmazlığı için hangi belgeler incelenir?',
+    answer:
+      'Tapu kayıtları, çap/plân, veraset belgesi, sözleşmeler, ödeme belgeleri, tebligatlar, fotoğraflar ve uyuşmazlığa ilişkin yazışmalar tipik inceleme kalemleridir.',
+  },
+];
+
+const jsonLd = graph([
+  organizationSchema(),
+  legalServiceSchema(),
+  personSchema(),
+  websiteSchema(),
+  webPageSchema({
+    path: '/',
+    name: siteConfig.siteName,
+    description: siteConfig.siteDescription,
+  }),
+  breadcrumbSchema([{ name: 'Ana Sayfa', path: '/' }]),
+  faqSchema(faqItems),
+]);
+---
+
+<BaseLayout
+  title={siteConfig.siteName}
+  description={siteConfig.siteDescription}
+  canonicalPath="/"
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="container">
+      <p class="hero-kicker">{siteConfig.brandName} · {siteConfig.siteTagline}</p>
+      <h1>Adana Gayrimenkul Avukatı</h1>
+      <p class="hero-lead">
+        Tapu, taşınmaz, ortaklığın giderilmesi ve miras kaynaklı gayrimenkul uyuşmazlıklarına ilişkin
+        hukuki değerlendirme ve dava takibi.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/gayrimenkul-hukuku/">Gayrimenkul Hukukunu İncele</a>
+        <a class="btn btn-secondary" href="/iletisim/">Sümer Hukuk ile İletişim</a>
+        <a class="btn btn-secondary" href={siteConfig.telephoneHref}>Telefonla Ara</a>
+      </div>
+      <div class="trust-row" aria-label="Çalışma alanları">
+        <div class="trust-item">Tapu ve Mülkiyet Uyuşmazlıkları</div>
+        <div class="trust-item">Ortaklığın Giderilmesi</div>
+        <div class="trust-item">Miras Kaynaklı Taşınmazlar</div>
+        <div class="trust-item">Sözleşme İnceleme</div>
+        <div class="trust-item">Adana Merkezli Hukuki Hizmet</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container prose">
+      <h2>Gayrimenkul hukuku nedir?</h2>
+      <p>
+        Gayrimenkul hukuku; taşınmaz mülkiyeti, tapu sicili, zilyetlik, paylı ve elbirliği mülkiyeti,
+        miras yoluyla intikal eden taşınmazlar ile gayrimenkul sözleşmelerini kapsayan bir hukuk
+        alanıdır. Uygulamada tek bir “tapu sorunu” gibi görünen uyuşmazlık çoğu zaman kayıt, sözleşme,
+        miras ve kullanım ilişkilerinin birlikte incelenmesini gerektirir.
+      </p>
+      <p>
+        Bu site, {siteConfig.brandName} tarafından hazırlanan bir bilgilendirme kaynağıdır. Amacı,
+        taşınmaz uyuşmazlıklarında sık karşılaşılan sorulara anlaşılır çerçeve sunmak ve ihtiyaç halinde
+        <a href={siteConfig.mainCorporateSite}>Sümer Hukuk</a> iletişim kanallarına yönlendirmektir.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-intro">
+        <h2>Öne çıkan çalışma alanları</h2>
+        <p>Tapu, ortaklık, miras ve sözleşme kaynaklı başlıca konu başlıkları.</p>
+      </div>
+      <div class="grid-cards">
+        {
+          featured.map((item) => (
+            <a class="topic-link" href={`/${item.slug}/`}>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-intro">
+        <h2>Hangi durumlarda hukuki değerlendirme gerekir?</h2>
+        <p>Aşağıdaki örnekler, erken belge incelemesinin önemini gösteren tipik durumlardır.</p>
+      </div>
+      <ul>
+        {situations.map((item) => <li>{item}</li>)}
+      </ul>
+      <p>
+        Konuların tamamı için
+        <a href="/gayrimenkul-hukuku/">gayrimenkul hukuku pillar sayfasını</a> inceleyebilirsiniz.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container prose">
+      <h2>Gayrimenkul Uyuşmazlıklarında Sümer Hukuk</h2>
+      <p>
+        Sümer Hukuk; Adana’da tapu, gayrimenkul, miras ve ortaklığın giderilmesi uyuşmazlıklarına
+        ilişkin hukuki danışmanlık ve dava takibi hizmeti sunmaktadır.
+      </p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href={siteConfig.mainCorporateSite}>Sümer Hukuk Ana Sitesi</a>
+        <a class="btn btn-ghost" href="/iletisim/">İletişim Bilgileri</a>
+        {
+          siteConfig.googleMapsUrl ? (
+            <a class="btn btn-ghost" href={siteConfig.googleMapsUrl} rel="noopener noreferrer">
+              Yol Tarifi
+            </a>
+          ) : null
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-intro">
+        <h2>Hukuki sürecin genel aşamaları</h2>
+        <p>Her dosya kendine özgüdür; aşağıdaki sıra genel bir çerçevedir ve sonuç garantisi içermez.</p>
+      </div>
+      <ol class="process-list">
+        <li>
+          <strong>İlk bilgilerin alınması</strong>
+          <p>Uyuşmazlığın konusu, taraflar, tarihler ve hedef sonuç netleştirilir.</p>
+        </li>
+        <li>
+          <strong>Tapu ve belgelerin incelenmesi</strong>
+          <p>Tapu kaydı, sözleşmeler, miras belgeleri ve yazışmalar birlikte değerlendirilir.</p>
+        </li>
+        <li>
+          <strong>Hukuki seçeneklerin değerlendirilmesi</strong>
+          <p>Sulh, ihtar, dava veya idari başvuru gibi yollar somut duruma göre kıyaslanır.</p>
+        </li>
+        <li>
+          <strong>Dava veya danışmanlık sürecinin yürütülmesi</strong>
+          <p>Seçilen yol doğrultusunda süreç planlanır; süre ve sonuç dosyaya göre değişir.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-intro">
+        <h2>Güncel makaleler</h2>
+        <p>Taşınmaz ve tapu konularında bilgilendirici yazılar.</p>
+      </div>
+      <div class="grid-cards">
+        {
+          articles.map((article) => (
+            <a class="topic-link" href={`/makaleler/${article.data.slug}/`}>
+              <h3>{article.data.title}</h3>
+              <p>{article.data.description}</p>
+            </a>
+          ))
+        }
+      </div>
+      <p style="margin-top:1.5rem;">
+        <a class="btn btn-ghost" href="/makaleler/">Tüm makaleler</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <FAQ items={faqItems} />
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container prose">
+      <h2>Gayrimenkul Hukuku İçeriklerinde Hukuki Uzmanlık</h2>
+      <p>
+        Bu sitedeki gayrimenkul, tapu, miras ve taşınmaz hukuku içerikleri Sümer Hukuk’un çalışma
+        alanları doğrultusunda hazırlanmaktadır. Hukuki inceleme bilgisi bulunan içeriklerde
+        Av. Ceren Sümer Cilli’nin mesleki değerlendirmesine ayrıca yer verilir.
+      </p>
+      <div class="cta-actions">
+        <a class="btn btn-ghost" href={attorney.profilePage}>Av. Ceren Sümer Cilli’yi Tanıyın</a>
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA />
+
+  <section class="section">
+    <div class="container">
+      <p class="notice">{siteConfig.relationshipNote}</p>
+      <p>
+        Tüm konu başlıkları:
+        {
+          topicPages.map((page, i) => (
+            <>
+              {i > 0 && ' · '}
+              <a href={`/${page.slug}/`}>{page.title}</a>
+            </>
+          ))
+        }
+      </p>
+    </div>
+  </section>
+</BaseLayout>

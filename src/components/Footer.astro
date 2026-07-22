@@ -1,0 +1,46 @@
+---
+import { siteConfig } from '../config/site';
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">{siteConfig.brandName}</div>
+        <p class="footer-note">
+          Bu site,
+          <a href={siteConfig.mainCorporateSite}>Sümer Hukuk</a>
+          tarafından gayrimenkul ve taşınmaz hukuku alanında genel bilgilendirme amacıyla hazırlanmıştır.
+        </p>
+        <p class="footer-note">{siteConfig.relationshipNote}</p>
+      </div>
+      <div>
+        <h2 style="font-size:1rem;color:#fff;margin-bottom:0.75rem;">İletişim</h2>
+        <p>
+          <a href={siteConfig.telephoneHref}>{siteConfig.telephoneDisplay}</a><br />
+          <a href={siteConfig.whatsappUrl} rel="noopener noreferrer">WhatsApp</a><br />
+          {siteConfig.fullAddress}
+        </p>
+      </div>
+      <div>
+        <h2 style="font-size:1rem;color:#fff;margin-bottom:0.75rem;">Sayfalar</h2>
+        <p>
+          <a href="/gayrimenkul-hukuku/">Gayrimenkul Hukuku</a><br />
+          <a href="/makaleler/">Makaleler</a><br />
+          <a href="/sumer-hukuk/">Sümer Hukuk</a><br />
+          <a href="/iletisim/">İletişim</a>
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} {siteConfig.brandName}</span>
+      <span>
+        <a href="/gizlilik-politikasi/">Gizlilik</a>
+        ·
+        <a href="/aydinlatma-metni/">Aydınlatma Metni</a>
+        ·
+        <a href="/kullanim-kosullari/">Kullanım Koşulları</a>
+      </span>
+    </div>
+  </div>
+</footer>

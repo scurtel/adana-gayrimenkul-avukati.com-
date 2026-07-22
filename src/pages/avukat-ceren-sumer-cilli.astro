@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import { lawFirm, attorney, site } from '../config/site';
+import {
+  graph,
+  organizationSchema,
+  legalServiceSchema,
+  websiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  personSchema,
+} from '../lib/schema';
+
+const path = attorney.profilePage;
+const jsonLd = graph([
+  organizationSchema(),
+  legalServiceSchema(),
+  personSchema(),
+  websiteSchema(),
+  webPageSchema({
+    path,
+    name: `${attorney.name} | Gayrimenkul ve Tapu Hukuku`,
+    description:
+      'Av. Ceren Sümer Cilli’nin gayrimenkul, tapu, miras ve taşınmaz uyuşmazlıklarına ilişkin çalışma alanları ve kurumsal iletişim bağlantıları.',
+  }),
+  breadcrumbSchema([
+    { name: 'Ana Sayfa', path: '/' },
+    { name: attorney.name, path },
+  ]),
+]);
+---
+
+<BaseLayout
+  title="Av. Ceren Sümer Cilli | Gayrimenkul ve Tapu Hukuku"
+  description="Av. Ceren Sümer Cilli’nin gayrimenkul, tapu, miras ve taşınmaz uyuşmazlıklarına ilişkin çalışma alanları ve kurumsal iletişim bağlantıları."
+  canonicalPath={path}
+  jsonLd={jsonLd}
+>
+  <header class="page-hero">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Ana Sayfa', href: '/' }, { label: attorney.name }]} />
+      <h1>{attorney.name}</h1>
+      <p class="lead">
+        Gayrimenkul, tapu, miras ve taşınmaz uyuşmazlıklarına ilişkin hukuki danışmanlık ve dava
+        takibi.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container prose">
+      <p>
+        Av. Ceren Sümer Cilli, Adana’da gayrimenkul, tapu, miras ve taşınmaz uyuşmazlıklarına ilişkin
+        hukuki danışmanlık ve dava takibi hizmeti sunmaktadır.
+      </p>
+      <p>
+        Bu sayfa, pillar sitedeki uzman kişi varlığını tanıtır. Siteyi yayımlayan birincil işletme
+        <a href="/sumer-hukuk/">Sümer Hukuk</a>’tur; ana iletişim ve dönüşüm kanalları Sümer Hukuk
+        üzerinden yürütülür.
+      </p>
+
+      <h2>Bağlantılar</h2>
+      <ul class="related-list">
+        <li>
+          <a href={attorney.personalWebsite} rel="noopener noreferrer">
+            Av. Ceren Sümer Cilli resmî internet sitesi
+          </a>
+        </li>
+        {
+          attorney.googleMapsUrl && (
+            <li>
+              <a href={attorney.googleMapsUrl} rel="noopener noreferrer">
+                Google Haritalar’da Av. Ceren Sümer Cilli
+              </a>
+            </li>
+          )
+        }
+        <li>
+          <a href={lawFirm.corporateWebsite}>Sümer Hukuk</a>
+        </li>
+        <li>
+          <a href="/sumer-hukuk/">Hukuk bürosu hakkında bilgi</a>
+        </li>
+      </ul>
+
+      <h2>Çalışma alanları ile ilişki</h2>
+      <p>
+        Pillar sitedeki gayrimenkul ve tapu hukuku içerikleri
+        <a href={lawFirm.corporateWebsite}>Sümer Hukuk</a>
+        çalışma alanları doğrultusunda hazırlanır. Avukat incelemesi yapılmış içeriklerde bu bilgi
+        ayrıca belirtilir.
+      </p>
+
+      <div class="notice">
+        {site.relationshipNote} Birincil iletişim için
+        <a href="/iletisim/">Sümer Hukuk iletişim sayfasını</a>
+        kullanabilirsiniz.
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA title="Sümer Hukuk ile iletişime geçin" />
+</BaseLayout>

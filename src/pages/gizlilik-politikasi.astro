@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { siteConfig } from '../config/site';
+
+const path = '/gizlilik-politikasi/';
+---
+
+<BaseLayout
+  title="Gizlilik Politikası"
+  description="adana-gayrimenkul-avukati.com gizlilik politikası ve kişisel verilerin korunmasına ilişkin bilgilendirme."
+  canonicalPath={path}
+>
+  <header class="page-hero">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Ana Sayfa', href: '/' }, { label: 'Gizlilik Politikası' }]} />
+      <h1>Gizlilik Politikası</h1>
+    </div>
+  </header>
+  <section class="section">
+    <div class="container prose">
+      <p>
+        Bu gizlilik politikası, {siteConfig.domain} adresinde yayınlanan bilgilendirme sitesi için
+        geçerlidir. Site, {siteConfig.brandName} tarafından işletilir.
+      </p>
+      <h2>Toplanan bilgiler</h2>
+      <p>
+        İletişim formu yapılandırıldığında ad soyad, telefon, e-posta ve mesaj içeriği gibi verdiğiniz
+        bilgiler talep ettiğiniz iletişimin yürütülmesi amacıyla işlenebilir. Form altyapısı
+        yapılandırılmamışsa bu kanal üzerinden veri toplanmaz.
+      </p>
+      <h2>Çerezler ve analitik</h2>
+      <p>
+        Google Analytics kimliği yapılandırıldığında kullanım istatistikleri toplanabilir. Kimlik
+        yapılandırılmamışsa üçüncü taraf analitik betiği yüklenmez.
+      </p>
+      <h2>Üçüncü taraflar</h2>
+      <p>
+        Telefon ve WhatsApp bağlantıları ilgili uygulamalara yönlendirir. Harita entegrasyonu
+        yalnızca Maps URL’leri config dosyasına eklendiğinde kullanılır.
+      </p>
+      <h2>İletişim</h2>
+      <p>
+        Gizlilik ile ilgili talepleriniz için
+        <a href={siteConfig.telephoneHref}>{siteConfig.telephoneDisplay}</a>
+        numarası veya
+        <a href="/iletisim/">iletişim sayfası</a>
+        üzerinden bize ulaşabilirsiniz.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import { site, lawFirm, attorney } from '../config/site';
+import {
+  graph,
+  organizationSchema,
+  legalServiceSchema,
+  websiteSchema,
+  webPageSchema,
+  breadcrumbSchema,
+  personSchema,
+} from '../lib/schema';
+
+const path = '/sumer-hukuk/';
+const jsonLd = graph([
+  organizationSchema(),
+  legalServiceSchema(),
+  personSchema(),
+  websiteSchema(),
+  webPageSchema({
+    path,
+    name: 'Sümer Hukuk',
+    description:
+      'Sümer Hukuk gayrimenkul ve tapu hukuku hizmetleri, iletişim bilgileri ve pillar site ilişkisi.',
+  }),
+  breadcrumbSchema([
+    { name: 'Ana Sayfa', path: '/' },
+    { name: 'Sümer Hukuk', path },
+  ]),
+]);
+---
+
+<BaseLayout
+  title="Sümer Hukuk | Gayrimenkul ve Tapu Hukuku"
+  description="Sümer Hukuk; Adana’da gayrimenkul, tapu, miras ve ortaklığın giderilmesi uyuşmazlıklarında hukuki destek sunar. Ana kurumsal site sumerhukuk.com’dur."
+  canonicalPath={path}
+  jsonLd={jsonLd}
+>
+  <header class="page-hero">
+    <div class="container">
+      <Breadcrumb items={[{ label: 'Ana Sayfa', href: '/' }, { label: 'Sümer Hukuk' }]} />
+      <h1>Sümer Hukuk</h1>
+      <p class="lead">
+        Adana’da faaliyet gösteren hukuk bürosu; gayrimenkul, tapu, miras ve ortaklığın giderilmesi
+        alanlarında hukuki destek sunar.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container prose">
+      <h2>Bu site ile kurumsal site arasındaki ilişki</h2>
+      <p>
+        <strong>adana-gayrimenkul-avukati.com</strong>, Sümer Hukuk tarafından hazırlanan gayrimenkul
+        ve taşınmaz hukuku bilgilendirme sitesidir. Bu alan adı ayrı bir hukuk bürosu, şube veya
+        bağımsız işletme değildir.
+      </p>
+      <p>
+        Ana kurumsal internet sitesi
+        <a href={lawFirm.corporateWebsite}>Sümer Hukuk resmî internet sitesi</a>
+        adresidir. Bu pillar site, tapu ve gayrimenkul konularında derin bilgilendirme sunmak için
+        oluşturulmuştur.
+      </p>
+
+      <h2>İşletme bilgileri</h2>
+      <ul>
+        <li>Marka: {lawFirm.brandName}</li>
+        <li>Google Business Profile: {lawFirm.businessProfileName}</li>
+        <li>
+          Telefon:
+          <a href={lawFirm.telephoneHref}>{lawFirm.telephoneDisplay}</a>
+        </li>
+        <li>
+          WhatsApp:
+          <a href={lawFirm.whatsappUrl} rel="noopener noreferrer">Mesaj gönder</a>
+        </li>
+        <li>Adres: {lawFirm.fullAddress}</li>
+      </ul>
+
+      <div class="cta-actions">
+        <a class="btn btn-primary" href={lawFirm.corporateWebsite}>Sümer Hukuk resmî internet sitesi</a>
+        <a class="btn btn-ghost" href={lawFirm.telephoneHref}>Telefonla İletişim</a>
+        {
+          lawFirm.googleMapsUrl && (
+            <>
+              <a class="btn btn-ghost" href={lawFirm.googleMapsUrl} rel="noopener noreferrer">
+                Google Haritalar’da Sümer Hukuk
+              </a>
+              <a class="btn btn-ghost" href={lawFirm.googleMapsUrl} rel="noopener noreferrer">
+                Yol Tarifi
+              </a>
+            </>
+          )
+        }
+        <a class="btn btn-ghost" href="/iletisim/">İletişim sayfası</a>
+      </div>
+
+      <h2>Gayrimenkul ve tapu hukuku çalışma alanları</h2>
+      <p>
+        Sümer Hukuk; Adana’da tapu uyuşmazlıkları, gayrimenkul davaları, miras kalan taşınmazlar,
+        ortaklığın giderilmesi, muris muvazaası, ecrimisil ve gayrimenkul sözleşmeleri konularında
+        hukuki danışmanlık ve dava takibi hizmeti sunmaktadır.
+      </p>
+      <p>
+        Konu başlıkları için
+        <a href="/gayrimenkul-hukuku/">gayrimenkul hukuku bilgilendirme sayfasını</a>
+        inceleyebilirsiniz.
+      </p>
+
+      <h2>Profesyonel bağlantı</h2>
+      <p>
+        Bu sitedeki hukuki içeriklerin uzman kişi varlığı olarak
+        <a href={attorney.profilePage}>{attorney.name}</a>
+        gösterilir. Avukatın kişisel mesleki sitesi
+        <a href={attorney.personalWebsite}>Av. Ceren Sümer Cilli resmî internet sitesi</a>
+        adresindedir. Birincil işletme ve iletişim varlığı Sümer Hukuk’tur.
+      </p>
+
+      <div class="notice">{site.relationshipNote}</div>
+    </div>
+  </section>
+
+  <ContactCTA title="Sümer Hukuk ile iletişime geçin" />
+</BaseLayout>

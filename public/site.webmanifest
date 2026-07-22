@@ -1,0 +1,18 @@
+{
+  "name": "Adana Gayrimenkul Avukatı | Sümer Hukuk",
+  "short_name": "Sümer Hukuk",
+  "description": "Sümer Hukuk tarafından hazırlanan gayrimenkul ve taşınmaz hukuku bilgilendirme sitesi.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f4ef",
+  "theme_color": "#1a2332",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -38,10 +38,9 @@ export const lawFirm = {
   city: 'Adana',
   country: 'TR',
   streetAddress: 'Kayalıbağ, Çolakoğlu İş Merkezi Kat 2 No: 1',
-  // TODO: Sümer Hukuk Google Maps paylaşım URL’sini ekleyin
-  googleMapsUrl: '',
-  // TODO: Sümer Hukuk Google Maps embed URL’sini ekleyin
-  googleMapsEmbedUrl: '',
+  googleMapsUrl: 'https://share.google/USe3yL6MOkfuLLM6B',
+  googleMapsEmbedUrl:
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3186.8527467554336!2d35.32827557622861!3d36.98944795700826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15288f9873af45f1%3A0xc06d0b3a21f42fe7!2sAdana%20Tapu%20Gayrimenkul%20Miras%20ve%20Ortakl%C4%B1%C4%9F%C4%B1n%20Giderilmesi%20Avukat%C4%B1%20-%20S%C3%BCmer%20Hukuk!5e0!3m2!1str!2str!4v1784753836128!5m2!1str!2str',
   // TODO: Sümer Hukuk Google yorum URL’sini ekleyin
   googleReviewUrl: '',
   // TODO: Doğrulanmış koordinatlar (uydurma değer kullanmayın)

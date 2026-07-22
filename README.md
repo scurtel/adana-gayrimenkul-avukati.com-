@@ -40,48 +40,43 @@ npm run check
 npm run audit
 ```
 
-## Hostinger Node.js deploy
+## Hostinger static deploy
 
-Bu proje Astro + `@astrojs/node` (**standalone**) ile Hostinger **Node.js** uygulaması olarak çalışır.
+Bu proje **saf statik Astro** çıktısı üretir (`output: 'static'`). Node.js runtime / Start Command gerekmez.
 
 | Ayar | Değer |
 |------|--------|
-| Node.js sürümü | **22.x** (`engines`: `>=22.12.0`) |
+| Node.js sürümü (build) | **22.x** (`engines`: `>=22.12.0`) |
 | Build command | `npm run build` |
-| Start command | `npm run start` |
-| Uygulama başlangıç dosyası | `dist/server/entry.mjs` |
-| Dinleme | `HOST=0.0.0.0`, port = `process.env.PORT` |
+| Output directory | `dist` |
+| Entry / Start file | **Boş bırakın** (statik site) |
+| Start command | **Gerekmez / boş** |
 
 ### Hostinger panel adımları
 
-1. GitHub deposunu bağlayın veya kaynakları yükleyin.
-2. Node.js sürümünü **22** seçin.
+1. GitHub deposunu bağlayın.
+2. Statik / Static site veya Websites yayınlama kullanın (Node.js app değil).
 3. Build command: `npm run build`
-4. Start / Application start command: `npm run start`
-5. Gerekirse Application root: proje kökü (`package.json`’ın olduğu klasör)
+4. Output / Publish directory: `dist`
+5. Entry File ve Start Command alanlarını boş bırakın.
+6. Domain’i bu static site’e bağlayın; `public_html` Node proxy `.htaccess` kurallarını kullanmayın.
 
 ### Environment variable isimleri
 
+Production build için zorunlu env yoktur.
+
 | Değişken | Zorunlu | Açıklama |
 |----------|---------|----------|
-| `PORT` | Hostinger genelde otomatik verir | HTTP dinleme portu |
-| `HOST` | Önerilir: `0.0.0.0` | Tüm arayüzlerden dinleme (start script varsayılanı) |
-| `GEMINI_API_KEY` | Hayır (yalnızca içerik üretimi) | Production `start` için gerekmez |
-| `GEMINI_GOOGLE_SEARCH_ENABLED` | Hayır | İçerik scripti için |
-
-Gerçek API anahtarlarını GitHub’a veya `.env.example` dosyasına koymayın. Panelde secret olarak ekleyin.
+| `GEMINI_API_KEY` | Hayır | Yalnızca lokal içerik üretimi |
+| `GEMINI_GOOGLE_SEARCH_ENABLED` | Hayır | İçerik scripti |
 
 ### Yerel production smoke test
 
 ```bash
-npm install
+npm ci
 npm run build
-PORT=4321 npm run start
+npx serve dist
 ```
-
-### Eski statik Hostinger notu
-
-Önceki `dist/` → `public_html` yükleme yolu bu Node.js kurulumunda geçerli değildir. Uygulama `npm run start` ile ayağa kalkar; sunucu hem SSR hem önceden üretilmiş statik varlıkları sunar.
 
 ## DNS ve SSL
 

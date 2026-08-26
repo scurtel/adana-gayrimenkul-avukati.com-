@@ -48,9 +48,13 @@ async function main() {
       const res = await wpFetch(`/wp-json/wp/v2/pages/${HOMEPAGE_ID}?context=edit`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const page = await res.json();
-      raw = page.content?.raw || page.content?.rendered || '';
-      source = 'wp-rest-edit';
-      console.log(`WordPress sayfa ID ${HOMEPAGE_ID} alındı (${raw.length} karakter).`);
+      raw = page.content?.raw || '';
+      if (raw) {
+        source = 'wp-rest-edit';
+        console.log(`WordPress sayfa ID ${HOMEPAGE_ID} alındı (${raw.length} karakter).`);
+      } else {
+        console.log(`WordPress sayfa ID ${HOMEPAGE_ID}: content.raw boş.`);
+      }
     } catch (err) {
       console.log(`WP REST alınamadı (${err.message}); genel HTML kullanılacak.`);
     }
@@ -59,6 +63,11 @@ async function main() {
   }
 
   if (!raw) {
+    if (EXECUTE) {
+      throw new Error(
+        '--execute için WordPress REST content.raw gerekli; genel HTML veya content.rendered yazılamaz.'
+      );
+    }
     raw = await fetchPublicHomepageHtml();
   }
 

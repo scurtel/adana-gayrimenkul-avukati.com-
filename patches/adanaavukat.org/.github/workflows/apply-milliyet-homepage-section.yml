@@ -1,0 +1,62 @@
+name: Apply Milliyet Homepage Section
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/apply-milliyet-homepage-section.yml"
+      - "scripts/apply-milliyet-homepage-section.mjs"
+      - "scripts/lib/milliyet-homepage-section.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: milliyet-homepage-section
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Mask WordPress secrets
+        env:
+          ADANAAVUKAT_WP_USERNAME: ${{ secrets.ADANAAVUKAT_WP_USERNAME }}
+          ADANAAVUKAT_WP_APP_PASSWORD: ${{ secrets.ADANAAVUKAT_WP_APP_PASSWORD }}
+        run: |
+          [ -n "$ADANAAVUKAT_WP_USERNAME" ] && echo "::add-mask::$ADANAAVUKAT_WP_USERNAME"
+          [ -n "$ADANAAVUKAT_WP_APP_PASSWORD" ] && echo "::add-mask::$ADANAAVUKAT_WP_APP_PASSWORD"
+          echo "Secret mask applied (values not printed)."
+
+      - name: Authentication test
+        env:
+          ADANAAVUKAT_WP_BASE_URL: ${{ secrets.ADANAAVUKAT_WP_BASE_URL }}
+          ADANAAVUKAT_WP_USERNAME: ${{ secrets.ADANAAVUKAT_WP_USERNAME }}
+          ADANAAVUKAT_WP_APP_PASSWORD: ${{ secrets.ADANAAVUKAT_WP_APP_PASSWORD }}
+        run: node scripts/apply-milliyet-homepage-section.mjs --auth-test
+
+      - name: Apply Milliyet section
+        env:
+          ADANAAVUKAT_WP_BASE_URL: ${{ secrets.ADANAAVUKAT_WP_BASE_URL }}
+          ADANAAVUKAT_WP_USERNAME: ${{ secrets.ADANAAVUKAT_WP_USERNAME }}
+          ADANAAVUKAT_WP_APP_PASSWORD: ${{ secrets.ADANAAVUKAT_WP_APP_PASSWORD }}
+        run: node scripts/apply-milliyet-homepage-section.mjs --execute
+
+      - name: Upload pre-deploy backup
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: milliyet-predeploy-backup
+          path: data/backups/
+          if-no-files-found: ignore

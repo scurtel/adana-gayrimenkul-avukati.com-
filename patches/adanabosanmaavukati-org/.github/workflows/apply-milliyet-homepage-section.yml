@@ -1,0 +1,72 @@
+name: Apply Milliyet Homepage Section
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/apply-milliyet-homepage-section.yml"
+      - "scripts/apply-milliyet-homepage-section.mjs"
+      - "scripts/lib/milliyet-homepage-section.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: milliyet-homepage-section
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Mask WordPress secrets
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APPLICATION_PASSWORD: ${{ secrets.WP_APPLICATION_PASSWORD }}
+          ADANABOSANMA_WP_USERNAME: ${{ secrets.ADANABOSANMA_WP_USERNAME }}
+          ADANABOSANMA_WP_APP_PASSWORD: ${{ secrets.ADANABOSANMA_WP_APP_PASSWORD }}
+        run: |
+          [ -n "$WP_USERNAME" ] && echo "::add-mask::$WP_USERNAME"
+          [ -n "$WP_APPLICATION_PASSWORD" ] && echo "::add-mask::$WP_APPLICATION_PASSWORD"
+          [ -n "$ADANABOSANMA_WP_USERNAME" ] && echo "::add-mask::$ADANABOSANMA_WP_USERNAME"
+          [ -n "$ADANABOSANMA_WP_APP_PASSWORD" ] && echo "::add-mask::$ADANABOSANMA_WP_APP_PASSWORD"
+          echo "Secret mask applied (values not printed)."
+
+      - name: Authentication test
+        env:
+          WP_BASE_URL: ${{ secrets.WP_BASE_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APPLICATION_PASSWORD: ${{ secrets.WP_APPLICATION_PASSWORD }}
+          ADANABOSANMA_WP_BASE_URL: ${{ secrets.ADANABOSANMA_WP_BASE_URL }}
+          ADANABOSANMA_WP_USERNAME: ${{ secrets.ADANABOSANMA_WP_USERNAME }}
+          ADANABOSANMA_WP_APP_PASSWORD: ${{ secrets.ADANABOSANMA_WP_APP_PASSWORD }}
+        run: node scripts/apply-milliyet-homepage-section.mjs --auth-test
+
+      - name: Apply Milliyet section
+        env:
+          WP_BASE_URL: ${{ secrets.WP_BASE_URL }}
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APPLICATION_PASSWORD: ${{ secrets.WP_APPLICATION_PASSWORD }}
+          ADANABOSANMA_WP_BASE_URL: ${{ secrets.ADANABOSANMA_WP_BASE_URL }}
+          ADANABOSANMA_WP_USERNAME: ${{ secrets.ADANABOSANMA_WP_USERNAME }}
+          ADANABOSANMA_WP_APP_PASSWORD: ${{ secrets.ADANABOSANMA_WP_APP_PASSWORD }}
+        run: node scripts/apply-milliyet-homepage-section.mjs --execute
+
+      - name: Upload pre-deploy backup
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: milliyet-predeploy-backup
+          path: data/backups/
+          if-no-files-found: ignore

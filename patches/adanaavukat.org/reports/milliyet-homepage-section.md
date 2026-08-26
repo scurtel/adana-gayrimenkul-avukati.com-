@@ -8,9 +8,9 @@ H2 `Av. Ceren Sümer Cilli` bölümünden sonra, `Neden Hukuki Destek Önemli?` 
 
 ## H2
 
-Av. Ceren Sümer Cilli’nin Milliyet’te Yayımlanan Hukuk Yazıları
+Av. Ceren Sümer Cilli’nin Milliyet Gazetesi’nde Yayımlanan Hukuk Yazıları
 
-Giriş: Av. Ceren Sümer Cilli’nin Milliyet bünyesindeki Milliyet Blog platformunda yayımlanan aile hukuku ve özel hukuk alanındaki yazılarından seçmeler.
+Giriş: Av. Ceren Sümer Cilli’nin Milliyet Gazetesi’nde yayımlanan aile hukuku ve özel hukuk alanındaki yazılarından seçmeler.
 
 ## Milliyet Gazetesi yazıları
 

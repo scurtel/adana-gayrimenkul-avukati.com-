@@ -8,9 +8,9 @@ H2 `Avukat Ceren Sümer Cilli ile Adana’da Boşanma Süreci` bölümünden son
 
 ## H2
 
-Av. Ceren Sümer Cilli’nin Milliyet’te Yayımlanan Hukuk Yazıları
+Av. Ceren Sümer Cilli’nin Milliyet Gazetesi’nde Yayımlanan Hukuk Yazıları
 
-Giriş: Av. Ceren Sümer Cilli’nin Milliyet bünyesindeki Milliyet Blog platformunda yayımlanan aile hukuku ve özel hukuk alanındaki yazılarından seçmeler. Bu seçkide çekişmeli boşanma, velayet ve nafaka konuları öne çıkar.
+Giriş: Av. Ceren Sümer Cilli’nin Milliyet Gazetesi’nde yayımlanan aile hukuku alanındaki yazılarından seçmeler. Bu seçkide çekişmeli boşanma, velayet ve nafaka konuları öne çıkar.
 
 ## Milliyet Gazetesi yazıları
 

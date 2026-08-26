@@ -5,7 +5,7 @@
 
 export const PROFILE_URL = 'https://www.cerensumer.av.tr/av-ceren-sumer-cilli/';
 export const SECTION_ID = 'milliyet-hukuk-yazilari';
-export const SECTION_H2 = 'Av. Ceren Sümer Cilli’nin Milliyet’te Yayımlanan Hukuk Yazıları';
+export const SECTION_H2 = 'Av. Ceren Sümer Cilli’nin Milliyet Gazetesi’nde Yayımlanan Hukuk Yazıları';
 
 export const INTERNAL_LINKS = {
   anlasmali: {
@@ -59,7 +59,7 @@ export function buildMilliyetHomepageSection({ gutenbergComments = true } = {}) 
   ).join('\n');
 
   const heading = `<h2 class="wp-block-heading" id="${SECTION_ID}">${SECTION_H2}</h2>`;
-  const intro = `<p class="wp-block-paragraph">Av. Ceren Sümer Cilli’nin Milliyet bünyesindeki Milliyet Blog platformunda yayımlanan aile hukuku ve özel hukuk alanındaki yazılarından seçmeler. Bu seçkide <a href="${INTERNAL_LINKS.cekismeli.href}">${INTERNAL_LINKS.cekismeli.text}</a>, velayet ve nafaka konuları öne çıkar.</p>`;
+  const intro = `<p class="wp-block-paragraph">Av. Ceren Sümer Cilli’nin Milliyet Gazetesi’nde yayımlanan aile hukuku alanındaki yazılarından seçmeler. Bu seçkide <a href="${INTERNAL_LINKS.cekismeli.href}">${INTERNAL_LINKS.cekismeli.text}</a>, velayet ve nafaka konuları öne çıkar.</p>`;
   const list = `<ul class="wp-block-list">\n${items}\n</ul>`;
   const closer = `<p class="wp-block-paragraph"><a href="${INTERNAL_LINKS.anlasmali.href}">Anlaşmalı boşanma</a> ve <a href="${INTERNAL_LINKS.malPaylasimi.href}">mal paylaşımı</a> süreçleri de bu yazılarla birlikte okunabilir. <a href="${PROFILE_URL}" rel="noopener">Av. Ceren Sümer Cilli’nin mesleki özgeçmişi ve yayınları</a> ana kişi profilinde yer alır.</p>`;
 
@@ -88,6 +88,8 @@ ${closer}
 export function homepageHasMilliyetSection(html = '') {
   return (
     html.includes(`id="${SECTION_ID}"`) ||
+    html.includes('Milliyet Gazetesi’nde Yayımlanan Hukuk Yazıları') ||
+    html.includes('Milliyet Gazetesi&#8217;nde Yayımlanan Hukuk Yazıları') ||
     html.includes('Milliyet’te Yayımlanan Hukuk Yazıları') ||
     html.includes('Milliyet&#8217;te Yayımlanan Hukuk Yazıları') ||
     html.includes('Milliyet Gazetesi’ndeki Hukuk Yazıları') ||

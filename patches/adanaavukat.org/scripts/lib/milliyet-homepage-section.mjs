@@ -5,7 +5,7 @@
 
 export const PROFILE_URL = 'https://www.cerensumer.av.tr/av-ceren-sumer-cilli/';
 export const SECTION_ID = 'milliyet-hukuk-yazilari';
-export const SECTION_H2 = 'Av. Ceren Sümer Cilli’nin Milliyet’te Yayımlanan Hukuk Yazıları';
+export const SECTION_H2 = 'Av. Ceren Sümer Cilli’nin Milliyet Gazetesi’nde Yayımlanan Hukuk Yazıları';
 
 export const MILLIYET_ARTICLES = [
   {
@@ -60,7 +60,7 @@ export function buildMilliyetHomepageSection() {
   return `<section id="${SECTION_ID}">
 <div class="aa-container">
 <h2>${SECTION_H2}</h2>
-<p class="aa-section-lead">Av. Ceren Sümer Cilli’nin Milliyet bünyesindeki Milliyet Blog platformunda yayımlanan aile hukuku ve özel hukuk alanındaki yazılarından seçmeler.</p>
+<p class="aa-section-lead">Av. Ceren Sümer Cilli’nin Milliyet Gazetesi’nde yayımlanan aile hukuku ve özel hukuk alanındaki yazılarından seçmeler.</p>
 <div class="aa-grid-3">
 ${cards}
 </div>
@@ -75,6 +75,8 @@ ${cards}
 export function homepageHasMilliyetSection(html = '') {
   return (
     html.includes(`id="${SECTION_ID}"`) ||
+    html.includes('Milliyet Gazetesi’nde Yayımlanan Hukuk Yazıları') ||
+    html.includes('Milliyet Gazetesi&#8217;nde Yayımlanan Hukuk Yazıları') ||
     html.includes('Milliyet’te Yayımlanan Hukuk Yazıları') ||
     html.includes('Milliyet&#8217;te Yayımlanan Hukuk Yazıları') ||
     html.includes('Milliyet Gazetesi’ndeki Hukuk Yazıları') ||
